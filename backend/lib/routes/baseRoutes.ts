@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
+import { ArticleController } from "../controllers/articleController";
 
 export class Routes {
+    public articleController: ArticleController = new ArticleController();
+
     public routes(app): void {
         app.route('/')
         .get((req: Request, res: Response) => {
@@ -13,42 +16,22 @@ export class Routes {
 
         app.route('/article')
         //GET Endpoint
-        .get((req: Request, res: Response) => {
-            res.status(200).send({
-                message: 'GET request successful'
-            });
-        })
+        .get(this.articleController.getAllArticles)
 
         //POST Endpoint
-        .post((req: Request, res: Response) => {
-            res.status(200).send({
-                message: 'POST request successful'
-            });
-        });
+        .post(this.articleController.addNewArticle);
 
         //Specific Article
 
         app.route('/article/:articleId')
         //GET Endpoint
-        .get((req: Request, res: Response) => {
-            res.status(200).send({
-                message: 'GET request successful'
-            });
-        })
+        .get(this.articleController.getArticleById)
 
         //Update Endpoint
-        .put((req: Request, res: Response) => {
-            res.status(200).send({
-                message: 'PUT request successful'
-            });
-        })
+        .put(this.articleController.updateArticleById)
 
         //Delete Endpoint
-        .delete((req: Request, res: Response) => {
-            res.status(200).send({
-                message: 'DELETE request successul'
-            });
-        });
+        .delete(this.articleController.deleteArticleById);
 
     }
 }
