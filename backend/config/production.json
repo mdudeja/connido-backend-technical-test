@@ -1,0 +1,9 @@
+{
+    "dbConfig": {
+        "host": "mongodb+srv://user_rw:AiObdhLuL6GJv80w@scripts-bstdi.mongodb.net/test?retryWrites=true",
+        "dbName": "db_articles"
+    },
+    "port": 3000,
+    "allowOrigin": "http://localhost:3000/*",
+    "usesHttps": false
+}

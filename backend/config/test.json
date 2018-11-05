@@ -1,0 +1,9 @@
+{
+    "dbConfig": {
+        "host": "mongodb://localhost:27017/",
+        "dbName": "db_articles_test"
+    },
+    "port": 3000,
+    "allowOrigin": "http://localhost:3000/*",
+    "usesHttps": false
+}

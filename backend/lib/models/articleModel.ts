@@ -13,6 +13,10 @@ export const ArticleSchema = new Schema({
         required: "Author's name is a mandatory field"
     },
 
+    content: [
+        {body: String}
+    ],  
+
     date_created: {
         type: Date,
         default: Date.now
