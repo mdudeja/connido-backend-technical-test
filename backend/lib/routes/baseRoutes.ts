@@ -14,10 +14,10 @@ export class Routes {
 
         //Articles
 
-        app.route('/article')
+        app.route("/article")
         //GET Endpoint
         .get(this.articleController.getAllArticles)
-
+        
         //POST Endpoint
         .post(this.articleController.addNewArticle);
 

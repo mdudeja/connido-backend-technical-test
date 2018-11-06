@@ -50,6 +50,13 @@ class App {
     }
 
     private mongoSetup(): void {
+        process.on("SIGINT", () => {
+            mongoose.connection.close(() => {
+                console.log("Mongoose Connection Closed");
+                process.exit(0);
+            });
+        });
+
         mongoose.connect(this.mongoUrl);
     }
 }

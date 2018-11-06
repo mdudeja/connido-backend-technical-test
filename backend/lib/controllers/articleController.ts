@@ -2,6 +2,7 @@ import * as mongoose from "mongoose";
 import { ArticleSchema } from "../models/articleModel";
 import { Request, Response } from "express";
 import * as debug from "debug";
+import * as config from "config";
 
 const Article = mongoose.model('Article', ArticleSchema);
 const debugLog = debug('backend:controller');
@@ -23,15 +24,25 @@ export class ArticleController {
     }
 
     public getAllArticles(req: Request, res: Response): void {
-        Article.find({}, (err, articles) => {
-            if(err){
-                debugLog("An error occured in getAllArticles()");
-                res.json({failed: true, error: err});
-            }else{
-                debugLog("Total Articles Returned: " +articles.length);
-                res.json(articles);
-            }
-        });
+        let perPage: number = config.get("countPerPage");
+        let page: number = req.query.page || 1;
+        Article
+            .find({})
+            .skip(perPage * (page - 1))
+            .limit(perPage)
+            .exec((err, articles) => {
+                if(err){
+                    debugLog("An error occured in getAllArticles()");
+                    res.json({failed: true, error: err});
+                }else{
+                    debugLog("Total Articles Returned: " +articles.length);
+                    res.json({
+                        articles: articles,
+                        current: page,
+                        pages: (Math.ceil(articles.length / perPage)) || 1
+                    });
+                }
+            });
     }
 
     public getArticleById(req: Request, res: Response): void {
@@ -60,13 +71,22 @@ export class ArticleController {
 
     public deleteArticleById(req: Request, res: Response): void {
         Article.remove({_id: req.params.articleId}, (err) => {
-            debugLog(err);
             if(err){
                 debugLog("An error occured in deleteArticleById()");
                 res.json({failed: true, error: err});
             }else{
                 debugLog("deleted article with id: " +req.params.articleId);
                 res.json({message: "Article deleted successfully"});   
+            }
+        });
+    }
+
+    public removeAll(): void {
+        Article.remove({}, (err) => {
+            if(err){
+                debugLog("An error occured in removeAll()");
+            }else{
+                debugLog("Collection clear successfully");   
             }
         });
     }

@@ -1,6 +1,8 @@
 import app from "../../lib/app";
 import * as chai from "chai";
 import chaiHttp = require("chai-http");
+require("../globalBefore");
+require("../globalAfter");
 
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -36,7 +38,7 @@ describe("POST /article", () => {
         requester
             .get("/article")
             .end((err, res) => {
-                countBefore = res.body.length;
+                countBefore = res.body.articles.length;
 
                 //Add another article
                 requester
@@ -48,7 +50,7 @@ describe("POST /article", () => {
                     requester
                         .get("/article")
                         .end((err, res) => {
-                            countAfter = res.body.length;
+                            countAfter = res.body.articles.length;
                             expect(err).to.be.null;
                             expect(countAfter).to.eql(countBefore+1);
                             requester.close();

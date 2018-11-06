@@ -1,11 +1,11 @@
 {
   "name": "backend",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "build": "tsc",
     "start": "NODE_ENV=production nodemon ./dist/server.js",
-    "test": "NODE_ENV=test mocha -r ts-node/register ./tests/**/*.spec.ts",
+    "test": "NODE_ENV=test mocha -r ts-node/register ./tests/**/*.spec.ts --exit",
     "start:dev": "DEBUG=backend:* ts-node ./lib/server.ts",
     "start:prod": "npm run build && npm run start",
     "start:test": "DEBUG=backend:test npm run test"

@@ -1,6 +1,8 @@
 import app from "../../lib/app";
 import * as chai from "chai";
 import chaiHttp = require("chai-http");
+require("../globalBefore");
+require("../globalAfter");
 
 chai.use(chaiHttp);
 const expect = chai.expect;
