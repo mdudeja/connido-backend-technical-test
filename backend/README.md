@@ -36,6 +36,7 @@ This is the backend implementation for a __REST API__ that allows consumers to c
 3. __GET /article/:articleId__: fetches a specific article from the database based on its `_id` value.
 4. __PUT /article/:articleId__: updates the article with `_id` *articleId*. Updated values need to be sent in the body of the request. You don't need to (re)send all fields of the article in your request. Just the ones that need to update will do. Please note that it expects the mime-type to be *x-www-form-urlencoded*, so please don't forget to check that box in **Postman** (or whichever utility you use) before issuing the request.
 5. __DELETE /article/:articleId__: removes the article with `_id` *articleId* from the database. Please note that this action is permanent.
+6. __GET /search?title=title[&author=author]__: returns the articles that match the author name and/or title. Based on regex search so is case-insensitive and partial search is possible. Response is paginated. Number of articles per page can be changed via config files.
 
 ### Config Files and Parameters
 The application has three config files inside the config folder. These are `default`, `production`, and `test`, corresponding with dev server, production server and test cases respectively.
