@@ -33,5 +33,9 @@ export class Routes {
         //Delete Endpoint
         .delete(this.articleController.deleteArticleById);
 
+        app.route("/search")
+        //GET Endpoing
+        .get(this.articleController.searchArticlesByTitleOrAuthor);
+
     }
 }

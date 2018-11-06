@@ -70,7 +70,7 @@ export class ArticleController {
     }
 
     public deleteArticleById(req: Request, res: Response): void {
-        Article.remove({_id: req.params.articleId}, (err) => {
+        Article.deleteOne({_id: req.params.articleId}, (err) => {
             if(err){
                 debugLog("An error occured in deleteArticleById()");
                 res.json({failed: true, error: err});
@@ -82,12 +82,43 @@ export class ArticleController {
     }
 
     public removeAll(): void {
-        Article.remove({}, (err) => {
+        Article.deleteMany({}, (err) => {
             if(err){
                 debugLog("An error occured in removeAll()");
             }else{
                 debugLog("Collection clear successfully");   
             }
         });
+    }
+
+    public searchArticlesByTitleOrAuthor(req: Request, res: Response): void {
+        let queryObject = {};
+        let perPage: number = config.get("countPerPage");
+        let page: number = req.query.page || 1;
+
+        if(req.query.author){
+            queryObject['author'] = new RegExp(req.query.author.toLowerCase(), 'i');
+        }
+        if(req.query.title){
+            queryObject['title'] = new RegExp(req.query.title.toLowerCase(), 'i');
+        }
+        
+        Article
+            .find(queryObject)
+            .skip(perPage * (page - 1))
+            .limit(perPage)
+            .exec((err, articles) => {
+                if(err){
+                    debugLog("An error occured in searchArticlesByTitleOrAuthor()");
+                    res.json({failed: true, error: err});
+                }else{
+                    debugLog("Total Articles Returned: " +articles.length);
+                    res.json({
+                        articles: articles,
+                        current: page,
+                        pages: (Math.ceil(articles.length / perPage)) || 1
+                    });
+                }
+            });
     }
 }
